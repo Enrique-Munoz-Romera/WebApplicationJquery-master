@@ -71,6 +71,7 @@
     <Content Include="AddBoxJQuery.html" />
     <Content Include="bootstrap example.html" />
     <Content Include="cargaClientesxml.js" />
+    <Content Include="ConsultasAccionDepartamentos.html" />
     <Content Include="Creacion de objetos checkbox.html" />
     <Content Include="CreaciondeControles.html" />
     <Content Include="css\bootstrap.min.css" />
@@ -90,6 +91,7 @@
     <Content Include="JS\jquery-3.5.1.min.js" />
     <Content Include="JS\js\bootstrap.bundle.min.js" />
     <Content Include="JS\js\bootstrap.min.js" />
+    <Content Include="Maestro Detalle.html" />
     <Content Include="practicaXMLcombo.html" />
     <Content Include="StudyJQ.html" />
     <Content Include="SumarNumerosCajas.html" />

@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h1>Acceso Servicos API Departamentos</h1>
+        <form>
+            <label>Número: </label>
+            <input type="number" id="cajaNumero" /><br />
+            <label>Nombre:  </label>
+            <input type="text" id="cajaNombre" /><br/>
+            <label>Localidad:  </label>
+            <input type="text" id="cajaLocalidad" /><br/>
+            <button type="button" id="botonInsertar">
+                Insertar
+            </button>
+            <button type="button" id="botonModificar">
+                Modificar
+            </button>
+            <button type="button" id="botonEliminar">
+                Eliminar
+            </button>
+        </form>
+        <hr />
+        <table border="1" id="tabla">
+            <thead>
+                <tr>
+                    <th>Numero</th>
+                    <th>Nombre</th>
+                    <th>Localidad</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <h2 id="mensaje" style="color:darkblue"></h2>
+        <script src="JS/jquery-3.5.1.min.js"></script>
+        <script>
+            var urlapi = "https://apicruddepartamentoscore.azurewebsites.net/";
+            $(document).ready(function () {
+                cargarDepartamentos();
+                console.log("llamamos a la function");
+                $("#botonEliminar").click(function () {
+                    console.log("get button" + this);
+                    var numero = $("#cajaNumero").val();
+                    var request = "/api/departamentos/" + numero;
+                    $.ajax({
+                        "url": urlapi + request
+                        , "type": "DELETE"
+                        , "success": function (data) {
+                            $("#mensaje").text("Departamento eliminado " + numero);
+                            cargarDepartamentos();
+                        }
+                    });
+                });
+            });
+
+            $("#botonInsertar").click(function () {
+                console.log("2 button" + this);
+                var numero = $("#cajaNumero").val();
+                var nombre = $("#cajaNombre").val();
+                var localidad = $("#cajaLocalidad").val();
+                var request = "/api/departamentos";
+                var departamento = new Object();
+                departamento.numero = parseInt(numero);
+                departamento.nombre = nombre;
+                departamento.localidad = localidad;
+                var json = JSON.stringify(departamento);
+                console.log("transformamos a json");
+                $.ajax({
+                    "url": urlapi + request
+                    , "type": "POST"
+                    , "data": json
+                    , "contentType": "application/json"
+                    , "success": function (data) {
+                        $("#mensaje").text("Departamento insertado");
+                        cargarDepartamentos();
+                    }
+                });
+            });
+                
+            $("#botonModificar").click(function () {
+                console.log("3 button" + this);
+                var numero = parseInt($("#cajaNumero").val());
+                var nombre = $("#cajaNombre").val();
+                var localidad = $("#cajaLocalidad").val();
+                var request = "/api/departamentos";
+                var departamento = new Object();
+                departamento.numero = numero;
+                departamento.nombre = nombre;
+                departamento.localidad = localidad;
+                var json = JSON.stringify(departamento);
+                $.ajax({
+                    "url": urlapi + request
+                    , "type": "PUT" 
+                    , "data": json
+                    , "contentType": "application/json"
+                    , "success": function (data) {
+                        $("#mensaje").text("Departamento Modificado");
+                        cargarDepartamentos();
+                    }
+                });
+
+            });
+
+            function cargarDepartamentos() {
+                var request = "/api/departamentos";
+                console.log("request" + request);
+                $.getJSON(urlapi + request, function (data) {
+                    var html = "";
+                    $.each(data, function (index, dept) {
+                        console.log("run array");
+                        html += "<tr>";
+                        html += "<td>" + dept.numero + "</td>";
+                        html += "<td>" + dept.nombre + "</td>";
+                        html += "<td>" + dept.localidad + "</td>";
+                        html += "</tr>";
+                    });
+                    $("#tabla tbody").html(html);
+                    console.log("crate table");
+                });
+            }
+        </script>
+    </div>
+</body>
+</html>
