@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>formatoXML</title>
+    <script type="text/javascript">
+        function realizarPeticion() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.addEventListener("load", mostrarDatos);
+                xhttp.open("GET", "xml/empleados.xml");
+                xhttp.send();
+            
+        }
+
+        function mostrarDatos() {
+            //tenemos 2 propiedades que nos dicen
+            //si la peticion es correcta
+            //recordamos que aqui se entra una vez que ha finalizado
+            //LA Peticion. YA SEA PETICION CORRECTA O INCORRECTA
+            //tenemos dos propiedades en el objeto this
+            //this.readyState--> si ha finalizado la lectura
+            //this.status--> el codigo de la respuesta (400) / (200)
+            var contenido = document.getElementById("contenido");
+            if (this.readyState == 4 && this.status == 200) {
+                //el obj XMLRequest se puede manejar con 
+                //los metodos del dom de html
+                // dicho obj viene en la propiedad this.responseXML
+                var docxml = this.responseXML;
+                //vamo a buscar un conjunto de nodos para aislar
+                //los apellidos (case SENSITIVE9)
+                var nodosApellidos = docxml.getElementsByTagName("APELLIDO");
+                var html = "<ul>";
+                //nos ha de devolver un conjunto de nodos
+                //lo recorremos con un bucle contador (for)
+                for (var i = 0; i < nodosApellidos.length; i++) {
+                    var nodo = nodosApellidos[i];
+                    //todo nodo puede tener a su vez hijos
+                    //EXISTE UNA PROPIEDAD para acceceder de forma jerarquica
+                    // childNodes[0]
+                    //una vez que tenemos algun hijo, podemos
+                    //mostrar su valor o seguir bajando a mas hijos
+                    //<apellido>Jimenez</apellido>
+                    //node.childNodes[0].nodeValue;-->rey
+                    //node.childNodes[1].nodeValue;-->animalista
+                    //
+                    //<dato>
+                         //<apelido>gonzalez</apellido>
+                        //<ofico>analista</oficio>
+                    //</dato>
+                    //existe una propiedad mas comoda cuando
+                    //ya estamos en un nodo que tiene contenido
+                    //si el nodo tiene subelementos,nos lo devuelve tambien
+                    //.textContent
+                    var apellido = nodo.textContent;
+                    html += "<li>" + apellido + "</li>";
+                }
+                html += "</ul>"
+            } else {
+                contenido.innerHTML = "<h1 style='color:red'>"
+                    + "la peticion ha sido incorrecta: " + this.status 
+                    + "</h1>"
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <h1>Empleados.xml con formato</h1>
+        <button type="button" onclick="realizarPeticion()">
+            Leer formato de empleados.xml
+        </button>
+        <div id="contenido"></div>
+    </div>
+</body>
+</html>

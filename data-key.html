@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+        <h1>Ejemplo de data-key</h1>
+        <button type="button" id="botonBotones">Generar botones</button>
+        <button type="button" id="botonLinks">Generrar links</button>
+        <hr />
+        <h2 id="resultado"></h2>
+        <div id="capaBotones"></div>
+        <hr />
+        <div id="capaLinks"></div>   
+    <script src="JS/jquery-3.5.1.min.js"></script>
+    <script>
+        function generarNumeros() {
+            var aleat = parseInt(Math.random() * 100);
+            return aleat;
+        }
+        $(document).ready(function () {
+            $("#botonBotones").click(function () {
+                for (var i = 1; i <= 5; i++) {
+                    var boton = $("<button>", {
+                        "text": "Sorpresa", "value": generarNumeros()
+                    });
+                    $("#capaBotones").append(boton);
+                    boton.click(function () {
+                        $("#resultado").text($(this).val());
+                    });
+                }
+            });
+            $("#botonLinks").click(function () {
+                for (var i = 1; i <= 5; i++) {
+                    var link = $("<a>", {
+                        "text": "Surprise ",
+                        "href": "#",
+                        "data-valor": generarNumeros()
+                    });
+                    $("#capaLinks").append(link);
+                    link.click(function () {
+                        var valor = $(this).data("valor");
+                        $("#resultado").text(valor);
+
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

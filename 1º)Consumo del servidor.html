@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>XML</title>
+    <script type="text/javascript">
+        //metodo para realizar la peticion al server local
+        function realizarPeticion() {
+            //creamos el obj REQUEST
+            var xhttp = new XMLHttpRequest();
+            //cuando hayamos realizado la peticion
+            //se ejecuta el metodo load (despues de la respuesta)
+            //delegamos el evento de respues de servicio
+            xhttp.addEventListener("load", pintarDatos);
+            //config el tipo de peticion a server
+            // y la url de acceso
+            xhttp.open("GET", "xml/empleados.xml");
+            //ejecutamos la peticion ya configurada
+            xhttp.send();
+        }
+
+        function pintarDatos() {
+            console.log("accediendo al servicio...");
+            //aqui en la funcion delegada
+            //viene el obj(this)
+            //dentro de esta peticion tenemos dos metodos
+            //responseXML respues con formato xml
+            //responseText respuesta con texto plano
+            var contenido = document.getElementById("contenido");
+            contenido.innerText = this.responseXML;
+        }
+    </script>
+</head>
+<body>
+    <h1>Leer documento Empleados.xml</h1>
+    <button type="button" onclick="realizarPeticion()">
+        Leer Empleados.xml
+    </button>
+    <div id="contenido"></div>
+</body>
+</html>
